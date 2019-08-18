@@ -1,4 +1,5 @@
 # sportscraper
+Sport event scraper for https://github.com/alexisfranche/sporthub.git
 
 Project example to scrape sport events at http://tornades.org/horaire-novice-masculin-a/ and generate a json file with the data using the Scrapy framework.
 
