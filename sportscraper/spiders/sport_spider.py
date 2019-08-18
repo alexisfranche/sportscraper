@@ -7,10 +7,12 @@ class SportSpider(scrapy.Spider):
         'http://tornades.org/horaire-novice-masculin-a/'
     ]
 
+    #Default method that framework will seek
     def parse(self, response):
         table = response.css("#content > div.entry-content > table:nth-child(1)")
         body = table.css("tbody")
         ctn = body.css("tr")
+        
         for data in ctn.css("tr"):
             infoNode = data.css("td")
             yield {
@@ -23,6 +25,7 @@ class SportSpider(scrapy.Spider):
                     'Location': self.parseNode((infoNode[6].get()))
                 }
 
+    #Method added to parse text content retrieved (remove tags).
     def parseNode(self, strNode):
         index = strNode.find("<")
         index2 = strNode.find(">")
