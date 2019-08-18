@@ -8,8 +8,18 @@ class SportSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
-       # for date in response.css('#content > div.entry-content > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(1)'):
+        table = response.css("#content > div.entry-content > table:nth-child(1)")
+        body = table.css("tbody")
+        ctn = body.css("tr")
+        for data in ctn.css("tr"):
+            infoNode = data.css("td")
+            print(infoNode)
             yield {
-                'date': response.css('#content > div.entry-content > table:nth-child(1) > tbody > tr:nth-child(2) > td:nth-child(1)::text').get()
-
-            }
+                    'Event date': str(infoNode[0].get()),
+                    'Time': str(infoNode[1].get()),
+                    'Local team': str(infoNode[2].get()),
+                    'Points Local': str(infoNode[3].get()),
+                    'Visitor Team': str(infoNode[4].get()),
+                    'Points Visitors': str(infoNode[5].get()),
+                    'Location': str(infoNode[6].get())
+                }
