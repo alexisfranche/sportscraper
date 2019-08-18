@@ -13,7 +13,6 @@ class SportSpider(scrapy.Spider):
         ctn = body.css("tr")
         for data in ctn.css("tr"):
             infoNode = data.css("td")
-            print(self.parseNode("-------------------" + infoNode[0].get().decode("latin-1", "replace") + "---------------"))
             yield {
                     'Event date': self.parseNode((infoNode[0].get())),
                     'Time': self.parseNode((infoNode[1].get())),
