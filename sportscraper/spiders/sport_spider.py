@@ -1,8 +1,9 @@
 import scrapy
 import requests
+from geopy.geocoders import Nominatim
 
 baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
-api_key="AIzaSyAglwogS08ArRJ7rUQu7xu_yGJxr6ZanZI"
+api_key="AIzaSyD0eMKjYpqtMwsXFFttIPxdDFAYkGlQEeQ"
 
 class SportSpider(scrapy.Spider):
     name = "sport"
@@ -21,14 +22,16 @@ class SportSpider(scrapy.Spider):
             infoNode = data.css("td")
 
             #linkLoc = self.parseMapsLink(infoNode[6].css("a::attr(href)").get())
-
-            Address = self.parseMapsLink(infoNode[6].css("a::attr(href)").get())
-            if Address is not None:
-                info = requests.get(baseUrl + Address + "&key=" +api_key)
-                resp_json_payload = info.json()
-                print(resp_json_payload)
             latitude = None
             longitude = None
+            Address = self.parseMapsLink(infoNode[6].css("a::attr(href)").get())
+            print(Address)
+            if Address is not None:
+                geolocator = Nominatim(user_agent="sportscraper")
+                location = geolocator.geocode(Address)
+                if location is not None:
+                    latitude = str(location.raw["lat"])
+                    longitude = str(location.raw["lon"])
 
             yield {
                     'Event date': self.parseNode((infoNode[0].get())),
@@ -41,6 +44,7 @@ class SportSpider(scrapy.Spider):
                     'Location Address': Address,
                     'Latitude': latitude,
                     'Longitude': longitude,
+                    'Google Maps Link': infoNode[6].css("a::attr(href)").get(),
                 }
 
     #Method added to parse text content retrieved (remove tags).
@@ -64,9 +68,28 @@ class SportSpider(scrapy.Spider):
                 addressTemp = link[index+6:]
                 index2 = addressTemp.find("/")
                 addressTemp = addressTemp[:index2]
-                #address = addressTemp.replace("+", " ")
-
-                return addressTemp
+                address = addressTemp.replace("+", " ")
+                index3 = self.findKey(address, ",", 1)#address.find(",")
+                if index3 == -1:
+                    return self.handleSpecChar(address)
+                else:
+                    address = address[:index3]
+                    return self.handleSpecChar(address)
         else:
             return None
 
+    def handleSpecChar(self, address):
+
+        index = address.find("%C3%")
+
+        if index == -1:
+            return address
+        else:
+            address = address[:index] + "e" + address[index+6:]
+            return address
+
+    def findKey(self, haystack, needle, n):
+        parts = haystack.split(needle, n + 1)
+        if len(parts) <= n + 1:
+            return -1
+        return len(haystack) - len(parts[-1]) - len(needle)
