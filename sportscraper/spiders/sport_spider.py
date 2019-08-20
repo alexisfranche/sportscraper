@@ -1,9 +1,5 @@
 import scrapy
-import requests
 from geopy.geocoders import Nominatim
-
-baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
-api_key="AIzaSyD0eMKjYpqtMwsXFFttIPxdDFAYkGlQEeQ"
 
 class SportSpider(scrapy.Spider):
     name = "sport"
@@ -21,11 +17,9 @@ class SportSpider(scrapy.Spider):
         for data in dataList:
             infoNode = data.css("td")
 
-            #linkLoc = self.parseMapsLink(infoNode[6].css("a::attr(href)").get())
             latitude = None
             longitude = None
             Address = self.parseMapsLink(infoNode[6].css("a::attr(href)").get())
-            print(Address)
             if Address is not None:
                 geolocator = Nominatim(user_agent="sportscraper")
                 location = geolocator.geocode(Address)
