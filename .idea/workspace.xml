@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="678057ac-bfc7-4999-8b2e-5619b910c641" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/sportscraper/spiders/BballRseq_spider.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,7 +31,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../dash_app" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunDashboard">
@@ -59,7 +58,8 @@
       <updated>1566140180091</updated>
       <workItem from="1567610503848" duration="29000" />
       <workItem from="1567622142363" duration="268000" />
-      <workItem from="1568002883895" duration="86000" />
+      <workItem from="1568002883895" duration="175000" />
+      <workItem from="1568007519808" duration="17000" />
     </task>
     <servers />
   </component>
